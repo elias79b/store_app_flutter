@@ -1,31 +1,20 @@
-import 'package:store_flutter/data/common/exceptions.dart';
+import 'package:store_flutter/common/exceptions.dart';
+import 'package:store_flutter/data/common/http_response_validator.dart';
 import 'package:store_flutter/data/product.dart';
 import 'package:dio/dio.dart';
-abstract class IProductdataSource{
+abstract class IProductDataSource {
   Future<List<ProductEntity>> getAll(int sort);
   Future<List<ProductEntity>> search(String searchTerm);
-
 }
 
-
-class ProductrRemoteDataSource implements IProductdataSource{
+class ProductRemoteDataSource with HttpResponseValidator implements IProductDataSource {
   final Dio httpClient;
-  ProductrRemoteDataSource(this.httpClient);
-  @override
-  Future<List<ProductEntity>> getAll(int sort) async{
-  final response =await  httpClient.get('product/list?sort=$sort');
-  validataResponse(response);
-  final products = <ProductEntity>[];
-  (response.data as List).forEach((element) {
-    products.add(ProductEntity.fromJson(element));
-  });
-  return products;
-  }
 
+  ProductRemoteDataSource(this.httpClient);
   @override
-  Future<List<ProductEntity>> search(String searchTerm) async{
-    final response =await  httpClient.get('product/search?q=$searchTerm');
-    validataResponse(response);
+  Future<List<ProductEntity>> getAll(int sort) async {
+    final response = await httpClient.get('product/list?sort=$sort');
+    validateResponse(response);
     final products = <ProductEntity>[];
     (response.data as List).forEach((element) {
       products.add(ProductEntity.fromJson(element));
@@ -33,12 +22,16 @@ class ProductrRemoteDataSource implements IProductdataSource{
     return products;
   }
 
-
-  validataResponse(Response response){
-
-    if(response.statusCode != 200){
-      throw AppException();
-    }
+  @override
+  Future<List<ProductEntity>> search(String searchTerm) async {
+    final response = await httpClient.get('product/search?q=$searchTerm');
+    validateResponse(response);
+    final products = <ProductEntity>[];
+    (response.data as List).forEach((element) {
+      products.add(ProductEntity.fromJson(element));
+    });
+    return products;
   }
+
 
 }

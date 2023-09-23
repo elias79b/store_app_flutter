@@ -1,22 +1,23 @@
 import 'package:dio/dio.dart';
+import 'package:store_flutter/data/common/http_client.dart';
 import 'package:store_flutter/data/product.dart';
 import 'package:store_flutter/data/source/product_data_source.dart';
 
-final httpClient =
-    Dio(BaseOptions(baseUrl: 'http://expertdevelopers.ir/api/v1/'));
+
+
+
 final productRepository =
-    ProductRepositiry(ProductrRemoteDataSource(httpClient) as IProductRepository);
+ProductRepository(ProductRemoteDataSource(httpClient));
 
 abstract class IProductRepository {
   Future<List<ProductEntity>> getAll(int sort);
-
   Future<List<ProductEntity>> search(String searchTerm);
 }
 
-class ProductRepositiry implements IProductRepository {
-  final IProductRepository dataSource;
+class ProductRepository implements IProductRepository {
+  final IProductDataSource dataSource;
 
-  ProductRepositiry(this.dataSource);
+  ProductRepository(this.dataSource);
 
   @override
   Future<List<ProductEntity>> getAll(int sort) => dataSource.getAll(sort);
