@@ -1,54 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:store_flutter/data/product.dart';
-import 'package:store_flutter/data/repo/banner_repository.dart';
-import 'package:store_flutter/data/repo/product_repository.dart';
+import 'package:store_flutter/data/repo/auth_repository.dart';
 import 'package:store_flutter/theme.dart';
-import 'package:store_flutter/ui/auth/auth.dart';
-import 'package:store_flutter/ui/home/home.dart';
 import 'package:store_flutter/ui/root.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  authRepository.loadAuthInfo();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    productRepository.getAll(ProductSort.latest).then((value) {
-      debugPrint(value.toString());
-    }).catchError((e) {
-      debugPrint(e.toString());
-    });
-
-    bannerRepository.getAll().then((value) {
-      debugPrint(value.toString());
-    }).catchError((e) {
-      debugPrint(e.toString());
-    });
     const defaultTextStyle = TextStyle(
         fontFamily: 'Kalameh', color: LightThemeColors.primaryTextColor);
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
       theme: ThemeData(
-          textTheme:  TextTheme(
-            subtitle1: defaultTextStyle.apply(color: LightThemeColors.secondaryTextColor),
-            button: defaultTextStyle,
+
+        // is not restarted.
+        scaffoldBackgroundColor: Colors.white,
+        snackBarTheme: SnackBarThemeData(
+            contentTextStyle: defaultTextStyle.apply(color: Colors.white)),
+        textTheme: TextTheme(
+            subtitle1: defaultTextStyle.apply(
+                color: LightThemeColors.secondaryTextColor),
             bodyText2: defaultTextStyle,
-            caption: defaultTextStyle.apply(color: LightThemeColors.secondaryTextColor),
-            headline6: defaultTextStyle.copyWith(fontWeight: FontWeight.bold),
-          ),
-          colorScheme: const ColorScheme.light(
-            primary: LightThemeColors.primaryColor,
-            secondary: LightThemeColors.secondaryColor,
-            onSecondary: Colors.white
-          )),
-      home: const Directionality(
-          textDirection: TextDirection.rtl,
-          child: AuthScreen()),
+            button: defaultTextStyle,
+            caption: defaultTextStyle.apply(
+                color: LightThemeColors.secondaryTextColor),
+            headline6: defaultTextStyle.copyWith(
+                fontWeight: FontWeight.bold, fontSize: 18)),
+        colorScheme: const ColorScheme.light(
+          primary: LightThemeColors.primaryColor,
+          secondary: LightThemeColors.secondaryColor,
+          onSecondary: Colors.white,
+        ),
+      ),
+      home:  Directionality(
+          textDirection: TextDirection.rtl, child: RootScreen()),
     );
   }
 }
-//AuthScreen
-////RootScreen()

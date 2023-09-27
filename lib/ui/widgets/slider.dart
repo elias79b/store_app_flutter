@@ -4,7 +4,6 @@ import 'package:store_flutter/common/utils.dart';
 import 'package:store_flutter/data/banner.dart';
 import 'package:store_flutter/ui/widgets/image.dart';
 
-
 class BannerSlider extends StatelessWidget {
   final PageController _controller = PageController();
   final List<BannerEntity> banners;

@@ -1,10 +1,7 @@
-
-
-
-
 import 'package:dio/dio.dart';
 import 'package:store_flutter/data/comment.dart';
 import 'package:store_flutter/data/common/http_response_validator.dart';
+
 
 abstract class ICommentDataSource {
   Future<List<CommentEntity>> getAll({required int productId});

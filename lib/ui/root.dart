@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:store_flutter/ui/cart/cart.dart';
 import 'package:store_flutter/ui/home/home.dart';
+
 
 const int homeIndex = 0;
 const int cartIndex = 1;
@@ -47,17 +49,13 @@ class _RootScreenState extends State<RootScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+        onWillPop: _onWillPop,
         child: Scaffold(
           body: IndexedStack(
             index: selectedScreenIndex,
             children: [
-              _navigator(_homeKey, homeIndex, const HomeScreen()),
-              _navigator(
-                  _cartKey,
-                  cartIndex,
-                  const Center(
-                    child: Text('Cart'),
-                  )),
+              _navigator(_homeKey, homeIndex,  HomeScreen()),
+              _navigator(_cartKey, cartIndex,  CartScreen()),
               _navigator(
                   _profileKey,
                   profileIndex,
@@ -84,8 +82,7 @@ class _RootScreenState extends State<RootScreen> {
               });
             },
           ),
-        ),
-        onWillPop: _onWillPop);
+        ));
   }
 
   Widget _navigator(GlobalKey key, int index, Widget child) {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:store_flutter/data/comment.dart';
 
 
-
 class CommentItem extends StatelessWidget {
   final CommentEntity comment;
   const CommentItem({

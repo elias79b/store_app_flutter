@@ -1,29 +1,25 @@
 import 'package:dio/dio.dart';
 import 'package:store_flutter/data/banner.dart';
-import 'package:store_flutter/data/common/http_client.dart';
 import 'package:store_flutter/data/common/http_response_validator.dart';
-import 'package:store_flutter/data/repo/banner_repository.dart';
 
-
-
-
-abstract class IBannerDataSource{
+abstract class IBannerDataSource {
   Future<List<BannerEntity>> getAll();
 }
 
-class BannerRemoteDataSource with HttpResponseValidator implements IBannerDataSource {
+class BannerRemoteDataSource
+    with HttpResponseValidator
+    implements IBannerDataSource {
   final Dio httpClient;
 
   BannerRemoteDataSource(this.httpClient);
   @override
-  Future<List<BannerEntity>> getAll() async{
+  Future<List<BannerEntity>> getAll() async {
     final response = await httpClient.get('banner/slider');
     validateResponse(response);
     final List<BannerEntity> banners = [];
     (response.data as List).forEach((jsonObject) {
       banners.add(BannerEntity.fromJson(jsonObject));
     });
-    return banners ;
+    return banners;
   }
-
 }

@@ -1,9 +1,11 @@
+
+
+import 'package:store_flutter/common/http_client.dart';
 import 'package:store_flutter/data/comment.dart';
-import 'package:store_flutter/data/common/http_client.dart';
 import 'package:store_flutter/data/source/comment_data_source.dart';
 
 final commentRepository =
-CommentRepository(CommentRemoteDataSource(httpClient));
+    CommentRepository(CommentRemoteDataSource(httpClient));
 
 abstract class ICommentRepository {
   Future<List<CommentEntity>> getAll({required int productId});
