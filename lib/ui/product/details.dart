@@ -23,9 +23,9 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  StreamSubscription<ProductState>? stateSubscription;
+   StreamSubscription<ProductState>? stateSubscription;
 
-  final GlobalKey<ScaffoldMessengerState> _scaffoldKey=GlobalKey();
+   final GlobalKey<ScaffoldMessengerState> _scaffoldKey=GlobalKey();
   @override
   void dispose() {
     stateSubscription?.cancel();
@@ -54,7 +54,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           key: _scaffoldKey,
           child: Scaffold(
             floatingActionButtonLocation:
-            FloatingActionButtonLocation.centerFloat,
+                FloatingActionButtonLocation.centerFloat,
             floatingActionButton: SizedBox(
               width: MediaQuery.of(context).size.width - 48,
               child: BlocBuilder<ProductBloc, ProductState>(
@@ -65,8 +65,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   },
                   label: state is ProductAddToCartButtonLoading
                       ? CupertinoActivityIndicator(
-                    color: Theme.of(context).colorScheme.onSecondary,
-                  )
+                          color: Theme.of(context).colorScheme.onSecondary,
+                        )
                       : const Text('افزودن به سبد خرید'),
                 ),
               ),
@@ -92,9 +92,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           children: [
                             Expanded(
                                 child: Text(
-                                  widget.product.title,
-                                  style: Theme.of(context).textTheme.headline6,
-                                )),
+                              widget.product.title,
+                              style: Theme.of(context).textTheme.headline6,
+                            )),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -104,7 +104,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       .textTheme
                                       .caption!
                                       .apply(
-                                      decoration: TextDecoration.lineThrough),
+                                          decoration: TextDecoration.lineThrough),
                                 ),
                                 Text(widget.product.price.withPriceLabel),
                               ],

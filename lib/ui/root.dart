@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:store_flutter/data/repo/auth_repository.dart';
+import 'package:store_flutter/data/repo/cart_repository.dart';
 import 'package:store_flutter/ui/cart/cart.dart';
 import 'package:store_flutter/ui/home/home.dart';
 
@@ -31,7 +33,7 @@ class _RootScreenState extends State<RootScreen> {
 
   Future<bool> _onWillPop() async {
     final NavigatorState currentSelectedTabNavigatorState =
-    map[selectedScreenIndex]!.currentState!;
+        map[selectedScreenIndex]!.currentState!;
     if (currentSelectedTabNavigatorState.canPop()) {
       currentSelectedTabNavigatorState.pop();
       return false;
@@ -54,23 +56,48 @@ class _RootScreenState extends State<RootScreen> {
           body: IndexedStack(
             index: selectedScreenIndex,
             children: [
-              _navigator(_homeKey, homeIndex,  HomeScreen()),
-              _navigator(_cartKey, cartIndex,  CartScreen()),
+              _navigator(_homeKey, homeIndex, const HomeScreen()),
+              _navigator(_cartKey, cartIndex, const CartScreen()),
               _navigator(
-                  _profileKey,
-                  profileIndex,
-                  const Center(
-                    child: Text('Profile'),
-                  )),
+                _profileKey,
+                profileIndex,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Profile'),
+                    ElevatedButton(
+                        onPressed: () {
+                          CartRepository.cartItemCountNotifier.value = 0;
+                          authRepository.signOut();
+                        },
+                        child: const Text('Sign Out')),
+                  ],
+                ),
+              ),
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(
+            items: [
+              const BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.home), label: 'خانه'),
               BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.cart), label: 'سبد خرید'),
-              BottomNavigationBarItem(
+                  icon: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      const Icon(CupertinoIcons.cart),
+                      Positioned(
+                          right: -10,
+                          child: ValueListenableBuilder<int>(
+                            valueListenable:
+                                CartRepository.cartItemCountNotifier,
+                            builder: (context, value, child) {
+                              return Badge();
+                            },
+                          )),
+                    ],
+                  ),
+                  label: 'سبد خرید'),
+              const BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.person), label: 'پروفایل'),
             ],
             currentIndex: selectedScreenIndex,
@@ -89,9 +116,15 @@ class _RootScreenState extends State<RootScreen> {
     return key.currentState == null && selectedScreenIndex != index
         ? Container()
         : Navigator(
-        key: key,
-        onGenerateRoute: (settings) => MaterialPageRoute(
-            builder: (context) => Offstage(
-                offstage: selectedScreenIndex != index, child: child)));
+            key: key,
+            onGenerateRoute: (settings) => MaterialPageRoute(
+                builder: (context) => Offstage(
+                    offstage: selectedScreenIndex != index, child: child)));
+  }
+
+  @override
+  void initState() {
+    cartRepository.count();
+    super.initState();
   }
 }

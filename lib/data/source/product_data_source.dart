@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:store_flutter/data/common/http_response_validator.dart';
 import 'package:store_flutter/data/product.dart';
 
+
 abstract class IProductDataSource {
   Future<List<ProductEntity>> getAll(int sort);
   Future<List<ProductEntity>> search(String searchTerm);

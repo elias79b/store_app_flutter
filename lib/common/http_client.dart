@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:store_flutter/data/repo/auth_repository.dart';
 
-
 final httpClient =
     Dio(BaseOptions(baseUrl: 'http://expertdevelopers.ir/api/v1/'))
       ..interceptors.add(InterceptorsWrapper(
